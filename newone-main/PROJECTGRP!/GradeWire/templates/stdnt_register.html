@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration and Login</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 40px;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form Labels and Inputs */
+        form label {
+            display: block;
+            margin: 8px 0 5px;
+            font-weight: bold;
+        }
+
+        form input, form select, form button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #2c3e50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Input Focus Styles */
+        form input:focus, form select:focus {
+            border-color: #2c3e50;
+            outline: none;
+        }
+
+        /* Extra Links for Login Page */
+        .extra-links {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .link a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+
+        .extra-links a {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .extra-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .form-container {
+                width: 90%;
+            }
+        }
+
+        /* Error message styling */
+        .error-list {
+            color: #e74c3c;
+            padding: 0;
+            margin-top: 5px;
+        }
+
+        .error-list li {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Student Registration Page -->
+    <div class="form-container">
+        <h2>Student Registration</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            <!-- Name -->
+            <label for="id_name">Name</label>
+            <input type="text" id="id_name" placeholder="Name" name="name" value="{{ studentForm.name.value|default:'' }}">
+            {% if studentForm.name.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Class -->
+            <label for="id_Class">Class</label>
+            <select id="id_Class" name="Class">
+                <option value="">Select Class</option>
+                <option value="1st Year" {% if studentForm.Class.value == '1st Year' %}selected{% endif %}>1st Year</option>
+                <option value="2nd Year" {% if studentForm.Class.value == '2nd Year' %}selected{% endif %}>2nd Year</option>
+                <option value="3rd Year" {% if studentForm.Class.value == '3rd Year' %}selected{% endif %}>3rd Year</option>
+                <option value="4th Year" {% if studentForm.Class.value == '4th Year' %}selected{% endif %}>4th Year</option>
+            </select>
+            {% if studentForm.Class.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.Class.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <!-- Department -->
+            <label for="id_department">Department</label>
+            <select id="id_department" name="department">
+                <option value="">Select Department</option>
+                <option value="Computer Science" {% if studentForm.department.value == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                <option value="Mechanical" {% if studentForm.department.value == 'Mechanical' %}selected{% endif %}>Mechanical</option>
+                <option value="Civil" {% if studentForm.department.value == 'Civil' %}selected{% endif %}>Civil</option>
+                <option value="Electrical" {% if studentForm.department.value == 'Electrical' %}selected{% endif %}>Electrical</option>
+            </select>
+            {% if studentForm.department.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.department.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+                    
+            <!-- Register ID -->
+            <label for="id_register_id">Register ID</label>
+            <input type="text" id="id_register_id" name="register_id" placeholder="Register ID" value="{{ studentForm.register_id.value|default:'' }}">
+            {% if studentForm.register_id.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.register_id.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Mobile -->
+            <label for="id_mobile">Mobile</label>
+            <input type="tel" id="id_mobile" placeholder="Mobile" name="mobile" pattern="[0-9]{10}" value="{{ studentForm.mobile.value|default:'' }}">
+            {% if studentForm.mobile.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.mobile.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Email -->
+            <label for="id_email">Email</label>
+            <input type="email" id="id_email" placeholder="Email" name="email" value="{{ studentForm.email.value|default:'' }}">
+            {% if studentForm.email.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Parent Name -->
+            <label for="id_parent">Parent Name</label>
+            <input type="text" id="id_parent" placeholder="Parent Name" name="parent" value="{{ studentForm.parent.value|default:'' }}">
+            {% if studentForm.parent.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.parent.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Parent Phone Number -->
+            <label for="id_parent_no">Parent Phone Number</label>
+            <input type="tel" id="id_parent_no" placeholder="Parent Phone Number" name="parent_no" pattern="[0-9]{10}" value="{{ studentForm.parent_no.value|default:'' }}">
+            {% if studentForm.parent_no.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.parent_no.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <!-- Password -->
+            <label for="id_password">Password</label>
+            <input type="password" id="id_password" placeholder="Password" name="password" value="{{ studentForm.password.value|default:'' }}">
+            {% if studentForm.password.errors %}
+                <ul class="error-list">
+                    {% for error in studentForm.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        
+            <button type="submit">Sign Up</button>
+        </form>
+        
+        <div class="link">
+            <p>Already have an account? <a href="{% url 'studentlogin' %}">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>

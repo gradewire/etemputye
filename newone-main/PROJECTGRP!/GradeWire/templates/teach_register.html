@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #2c3e50;
+        }
+        .link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .link a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Teacher Registration</h2>
+    <form action="" method="POST">
+        {% csrf_token %} 
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="text" name="teacher_id" placeholder="Teacher ID" required>
+        <input type="password" name="password" placeholder="Password" required>
+
+        <!-- Department Dropdown -->
+        <select name="department" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="CS">Computer Science (CS)</option>
+            <option value="PC">Polymer Chemistry (PC)</option>
+            <option value="BBA">Bachelor of Business Administration (BBA)</option>
+            <option value="BCOM">Bachelor of Commerce (BCOM)</option>
+        </select>
+
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <div class="link">
+        <p>Already have an account? <a href="{% url 'teacherLogin' %}">Login here</a></p>
+    </div>
+</div>
+
+</body>
+</html>

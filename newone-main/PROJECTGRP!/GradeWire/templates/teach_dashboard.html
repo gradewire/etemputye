@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1; /* This will push the logout option to the bottom in desktop view */
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            background-color: #34495e;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Logout Styles - Desktop Only */
+        .sidebar ul li.logout {
+            margin-top: auto; /* Pushes logout option to the bottom in desktop view */
+        }
+
+        .sidebar ul li.logout a:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        form input, form select, form button {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #2c3e50;
+            color: white;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #1abc9c;
+        }
+
+        .attendance-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .attendance-table th, .attendance-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .attendance-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .attendance-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Media Query for Horizontal Navbar (Mobile View) */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 10px;
+            }
+
+            .sidebar ul {
+                display: flex;
+                justify-content: center;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar ul li {
+                margin: 0 10px;
+            }
+
+            .sidebar ul li a {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .sidebar ul li.logout {
+                margin-top: 0;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+        }
+
+        /* Extra Small screens */
+        @media screen and (max-width: 480px) {
+            .sidebar ul li a {
+                font-size: 12px;
+            }
+
+            form input, form select, form button {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .attendance-table th, .attendance-table td {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Teacher Dashboard</h2>
+            <ul>
+                <li><a href="javascript:void(0);" onclick="showSection('home')">Home</a></li>
+                <li><a href="javascript:void(0);" onclick="showSection('profile')">Profile</a></li>
+                <li><a href="javascript:void(0);" onclick="showSection('attendance')">Attendance</a></li>
+                <li><a href="javascript:void(0);" onclick="showSection('marks')">Marks</a></li>
+                <li><a href="javascript:void(0);" onclick="showSection('students')">Students</a></li>
+                <!-- Logout option at the very bottom (only for Desktop) -->
+                <li class="logout"><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Home Section -->
+            <section id="home">
+                <h2>Welcome to Your Dashboard</h2>
+                <p>This is your teacher dashboard where you can manage attendance, marks, and view students. Use the navigation on the left to access different sections.</p>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile">
+                <h2>Your Profile</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="John Doe" disabled><br><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="john.doe@example.com" disabled><br><br>
+
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="+123456789" disabled><br><br>
+
+                    <label for="department">Department:</label>
+                    <input type="text" id="department" name="department" value="Mathematics" disabled><br><br>
+
+                    <button type="button" onclick="alert('Profile updated!')">Update Profile</button>
+                </form>
+            </section>
+
+           <!-- Manage Attendance Section -->
+            <section id="attendance">
+                <h2>Manage Attendance</h2>
+                <form id="attendanceForm">
+                    <!-- Date Selection -->
+                    <label for="date">Select Date:</label>
+                    <input type="date" id="date" name="date"><br><br>
+
+                    <!-- Attendance for Students -->
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Hour 1</th>
+                                <th>Hour 2</th>
+                                <th>Hour 3</th>
+                                <th>Hour 4</th>
+                                <th>Hour 5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td><input type="checkbox" id="john-hour-1" name="attendance-john-hour-1"></td>
+                                <td><input type="checkbox" id="john-hour-2" name="attendance-john-hour-2"></td>
+                                <td><input type="checkbox" id="john-hour-3" name="attendance-john-hour-3"></td>
+                                <td><input type="checkbox" id="john-hour-4" name="attendance-john-hour-4"></td>
+                                <td><input type="checkbox" id="john-hour-5" name="attendance-john-hour-5"></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Smith</td>
+                                <td><input type="checkbox" id="jane-hour-1" name="attendance-jane-hour-1"></td>
+                                <td><input type="checkbox" id="jane-hour-2" name="attendance-jane-hour-2"></td>
+                                <td><input type="checkbox" id="jane-hour-3" name="attendance-jane-hour-3"></td>
+                                <td><input type="checkbox" id="jane-hour-4" name="attendance-jane-hour-4"></td>
+                                <td><input type="checkbox" id="jane-hour-5" name="attendance-jane-hour-5"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit">Mark Attendance for Selected Date and Hours</button>
+
+                    <div class="success-message" id="successMessage" style="display: none;">
+                        Attendance marked successfully!
+                    </div>
+                </form>
+            </section>
+
+            <!-- Manage Marks Section -->
+            <section id="marks">
+                <h2>Manage Marks</h2>
+                <form>
+                    <label for="semester">Select Semester:</label>
+                    <select id="semester" name="semester" required>
+                        <option value="semester-1">Semester 1</option>
+                        <option value="semester-2">Semester 2</option>
+                        <option value="semester-3">Semester 3</option>
+                        <option value="semester-4">Semester 4</option>
+                        <option value="semester-5">Semester 5</option>
+                        <option value="semester-6">Semester 6</option>
+                    </select><br><br>
+
+                    <label for="subject">Select Subject:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="math101">Mathematics 101</option>
+                        <option value="phy101">Physics 101</option>
+                        <option value="chem101">Chemistry 101</option>
+                        <option value="bio101">Biology 101</option>
+                    </select><br><br>
+
+                    <label for="registerNumber">Enter Register Number:</label>
+                    <input type="text" id="registerNumber" name="registerNumber" required placeholder="Enter Register Number"><br><br>
+
+                    <label for="internalMarks">Internal Marks:</label>
+                    <input type="number" id="internalMarks" name="internalMarks" required min="0" max="100" placeholder="Enter Internal Marks"><br><br>
+
+                    <label for="externalMarks">External Marks:</label>
+                    <input type="number" id="externalMarks" name="externalMarks" required min="0" max="100" placeholder="Enter External Marks"><br><br>
+
+                    <button type="submit">Submit Marks</button>
+                </form>
+            </section>
+
+            <!-- View Students Section -->
+            <section id="students">
+                <h2>View Student Details</h2>
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Doe</td>
+                            <td>john.doe@example.com</td>
+                            <td>+123456789</td>
+                            <td>Mathematics</td>
+                        </tr>
+                        <tr>
+                            <td>Jane Smith</td>
+                            <td>jane.smith@example.com</td>
+                            <td>+987654321</td>
+                            <td>Science</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // Function to show selected section and hide others
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => section.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        window.onload = () => {
+            showSection('home');
+        };
+
+        // Function to handle logout
+        function logout() {
+            alert("You have logged out successfully.");
+            // Add your logout logic here (e.g., redirect to login page)
+        }
+    </script>
+</body>
+</html>

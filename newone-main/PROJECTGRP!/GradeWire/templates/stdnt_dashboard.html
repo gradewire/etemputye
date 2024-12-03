@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <style>
+    /* Basic reset and layout styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f4f7fc;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+    }
+
+    /* Sidebar Menu (Vertical on large screens, Horizontal on small screens) */
+    .sidebar {
+      background-color: #2c3e50;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: left 0.3s ease; /* Smooth transition for mobile view */
+      z-index: 1; /* Make sure the sidebar is above other elements */
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #34495e;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #1abc9c;
+    }
+
+    /* Top navigation menu (for small screens) */
+    .top-nav {
+      display: none; /* Hidden by default */
+      background-color: #2c3e50;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .top-nav ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+    }
+
+    .top-nav ul li {
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .top-nav ul li:hover {
+      background-color: #1abc9c;
+    }
+
+    /* Content Area */
+    .content {
+      margin-left: 250px; /* Default margin when sidebar is visible */
+      padding: 20px;
+      flex: 1;
+      transition: margin-left 0.3s ease;
+      padding-top: 70px; /* To avoid overlap with top menu */
+    }
+
+    .content h1 {
+      color: #2c3e50;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      color: #34495e;
+      margin-bottom: 15px;
+    }
+
+    .section p {
+      font-size: 16px;
+      color: #7f8c8d;
+    }
+
+    /* Mobile and small screen responsive design */
+    @media screen and (max-width: 768px) {
+      /* Hide sidebar and display top-nav instead */
+      .sidebar {
+        display: none;
+      }
+
+      .top-nav {
+        display: block; /* Show top navigation */
+      }
+
+      /* Content margin adjustment for small screens */
+      .content {
+        margin-left: 0; /* No margin needed for small screens */
+      }
+
+      .content {
+        padding-top: 60px; /* Add space for the top nav */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Menu (visible on large screens) -->
+  <div class="sidebar" id="sidebar">
+    <h2>Student Dashboard</h2>
+    <ul>
+      <li id="homeBtn">Home</li>
+      <li id="profileBtn">Profile</li>
+      <li id="attendanceBtn">Attendance</li>
+      <li id="resultsBtn">Results</li>
+    </ul>
+  </div>
+
+  <!-- Top Navigation (for mobile screens) -->
+  <div class="top-nav" id="topNav">
+    <ul>
+      <li id="homeBtnTop">Home</li>
+      <li id="profileBtnTop">Profile</li>
+      <li id="attendanceBtnTop">Attendance</li>
+      <li id="resultsBtnTop">Results</li>
+    </ul>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content" id="content">
+    <!-- Home Section -->
+    <div class="section" id="homeSection">
+      <h1>Welcome to Your Dashboard</h1>
+      <p>Here you can view your profile, attendance, and exam results.</p>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="section" id="profileSection" style="display: none;">
+      <h2>Profile</h2>
+      <p><strong>Name:</strong> John Doe</p>
+      <p><strong>Student ID:</strong> 123456</p>
+      <p><strong>Department:</strong> Computer Science</p>
+      <p><strong>Email:</strong> johndoe@example.com</p>
+    </div>
+
+    <!-- Attendance Section -->
+    <div class="section" id="attendanceSection" style="display: none;">
+      <h2>Attendance</h2>
+      <p><strong>Current Attendance:</strong> 85%</p>
+      <p><strong>Days Present:</strong> 17</p>
+      <p><strong>Days Absent:</strong> 3</p>
+    </div>
+
+    <!-- Results Section -->
+    <div class="section" id="resultsSection" style="display: none;">
+      <h2>Results</h2>
+      <p><strong>Math:</strong> 88%</p>
+      <p><strong>Science:</strong> 92%</p>
+      <p><strong>History:</strong> 78%</p>
+      <p><strong>English:</strong> 85%</p>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for menu interaction (both vertical and horizontal)
+    document.getElementById("homeBtn").addEventListener("click", function() {
+      showSection("homeSection");
+    });
+
+    document.getElementById("profileBtn").addEventListener("click", function() {
+      showSection("profileSection");
+    });
+
+    document.getElementById("attendanceBtn").addEventListener("click", function() {
+      showSection("attendanceSection");
+    });
+
+    document.getElementById("resultsBtn").addEventListener("click", function() {
+      showSection("resultsSection");
+    });
+
+    // Top navigation button interactions for mobile
+    document.getElementById("homeBtnTop").addEventListener("click", function() {
+      showSection("homeSection");
+    });
+
+    document.getElementById("profileBtnTop").addEventListener("click", function() {
+      showSection("profileSection");
+    });
+
+    document.getElementById("attendanceBtnTop").addEventListener("click", function() {
+      showSection("attendanceSection");
+    });
+
+    document.getElementById("resultsBtnTop").addEventListener("click", function() {
+      showSection("resultsSection");
+    });
+
+    // Show/hide the relevant section
+    function showSection(sectionId) {
+      document.getElementById("homeSection").style.display = "none";
+      document.getElementById("profileSection").style.display = "none";
+      document.getElementById("attendanceSection").style.display = "none";
+      document.getElementById("resultsSection").style.display = "none";
+
+      document.getElementById(sectionId).style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
